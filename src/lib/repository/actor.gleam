@@ -34,6 +34,6 @@ fn handle_set(state: Repository, key: String, value: String) -> Next(Message, Re
   actor.continue(state)
 }
 
-pub fn start(name: String) -> Result(Subject(Message), StartError) {
-  actor.start(repository.new(name), handle_message)
+pub fn start(repository: Repository) -> Result(Subject(Message), StartError) {
+  actor.start(repository, handle_message)
 }
