@@ -1,4 +1,5 @@
 import gleam/erlang/process.{type Subject}
+import gleam/io
 import gleam/option.{type Option}
 import gleam/otp/actor.{type Next, type StartError}
 
@@ -11,6 +12,9 @@ pub type Message {
 }
 
 fn handle_message(msg: Message, state: Repository) -> Next(Message, Repository) {
+  io.debug(msg)
+  io.debug(state)
+
   case msg {
     Delete(key) -> handle_delete(state, key)
     Get(key, subject) -> handle_get(state, key, subject)

@@ -57,7 +57,9 @@ fn handle_request(req: Request, conn: Connection, owner: Subject(Request)) -> Re
       process.new_selector()
       |> process.selecting(req.subject, option.unwrap(_, "/"))
       |> process.select_forever()
-      |> bytes_builder.from_string()
+      |> string_builder.from_string()
+      |> string_builder.append("\n")
+      |> bytes_builder.from_string_builder()
       |> glisten.send(conn, _)
 
       Ok(Nil)
@@ -86,9 +88,9 @@ fn processing_error_to_string(error: ProcessingError) -> String {
   }
 
   string_builder.new()
-  |> string_builder.append("Error :")
+  |> string_builder.append("Error: ")
   |> string_builder.append(reason)
-  |> string_builder.append(".")
+  |> string_builder.append(".\n")
   |> string_builder.to_string()
 }
 

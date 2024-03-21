@@ -1,5 +1,6 @@
 import gleam/dict.{type Dict}
 import gleam/option.{type Option, None, Some}
+import gleam/result
 import gleam/string
 
 pub type Repository {
@@ -32,14 +33,15 @@ pub type Action {
 }
 
 pub fn parse_action(from: String) -> Result(Action, Nil) {
-  case string.lowercase(from) {
+  let formatted = string.trim(from) |> string.lowercase()
+
+  case formatted {
     "delete " <> key -> Ok(Delete(key))
     "get " <> key -> Ok(Get(key))
     "set " <> rest -> {
-      case string.split(rest, on: " ") {
-        [key, value] -> Ok(Set(key, value))
-        _ -> Error(Nil)
-      }
+      string.split_once(rest, on: " ")
+      |> result.map(fn(value) { Set(value.0, value.1) })
+      |> result.replace_error(Nil)
     }
     _ -> Error(Nil)
   }

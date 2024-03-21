@@ -4,7 +4,7 @@ import gleam/option.{None, Some}
 import gleeunit
 import gleeunit/should
 
-import lib/repository.{type Repository}
+import lib/repository
 import lib/repository/actor.{type Message, Delete, Get, Set}
 
 pub fn main() {
